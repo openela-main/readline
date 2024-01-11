@@ -1,0 +1,34 @@
+From 6c32f81cd66bbe86218469063690c84205661a5e Mon Sep 17 00:00:00 2001
+From: Chet Ramey <chet.ramey@case.edu>
+Date: Sun, 29 Jan 2017 13:55:51 -0500
+Subject: [PATCH] Readline-7.0 patch 3
+
+---
+ input.c    | 1 +
+ patchlevel | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/input.c b/input.c
+index 286897d..24126ea 100644
+--- a/input.c
++++ b/input.c
+@@ -513,6 +513,7 @@ rl_getc (stream)
+       result = 0;
+ #if defined (HAVE_PSELECT)
+       sigemptyset (&empty_set);
++      sigprocmask (SIG_BLOCK, (sigset_t *)NULL, &empty_set);
+       FD_ZERO (&readfds);
+       FD_SET (fileno (stream), &readfds);
+       result = pselect (fileno (stream) + 1, &readfds, NULL, NULL, NULL, &empty_set);
+diff --git a/patchlevel b/patchlevel
+index 7cbda82..ce3e355 100644
+--- a/patchlevel
++++ b/patchlevel
+@@ -1,3 +1,3 @@
+ # Do not edit -- exists only for use by patch
+ 
+-2
++3
+-- 
+2.13.6
+

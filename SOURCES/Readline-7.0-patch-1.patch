@@ -1,0 +1,46 @@
+From acf3951d483e7b3478db4d731f4a8af99d27327d Mon Sep 17 00:00:00 2001
+From: Chet Ramey <chet.ramey@case.edu>
+Date: Wed, 16 Nov 2016 12:57:31 -0500
+Subject: [PATCH] Readline-7.0 patch 1
+
+---
+ history.c  | 6 +++++-
+ patchlevel | 2 +-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/history.c b/history.c
+index 3b8dbc5..9ff25a7 100644
+--- a/history.c
++++ b/history.c
+@@ -57,6 +57,8 @@ extern int errno;
+ /* How big to make the_history when we first allocate it. */
+ #define DEFAULT_HISTORY_INITIAL_SIZE	502
+ 
++#define MAX_HISTORY_INITIAL_SIZE	8192
++
+ /* The number of slots to increase the_history by. */
+ #define DEFAULT_HISTORY_GROW_SIZE 50
+ 
+@@ -307,7 +309,9 @@ add_history (string)
+       if (history_size == 0)
+ 	{
+ 	  if (history_stifled && history_max_entries > 0)
+-	    history_size = history_max_entries + 2;
++	    history_size = (history_max_entries > MAX_HISTORY_INITIAL_SIZE)
++				? MAX_HISTORY_INITIAL_SIZE
++				: history_max_entries + 2;
+ 	  else
+ 	    history_size = DEFAULT_HISTORY_INITIAL_SIZE;
+ 	  the_history = (HIST_ENTRY **)xmalloc (history_size * sizeof (HIST_ENTRY *));
+diff --git a/patchlevel b/patchlevel
+index d8c9df7..fdf4740 100644
+--- a/patchlevel
++++ b/patchlevel
+@@ -1,3 +1,3 @@
+ # Do not edit -- exists only for use by patch
+ 
+-0
++1
+-- 
+2.9.3
+
